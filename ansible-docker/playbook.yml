@@ -1,0 +1,19 @@
+---
+ - hosts: igsousa
+   remote_user: root
+   become: yes
+   tasks:
+     - name: "Executa databse MySQL container"
+       docker_container:
+         name: banco
+         image: mysql:5.6
+         env:
+           MYSQL_ROOT_PASSWORD: senha123
+     - name: "Executa o WP container"
+       docker_container:
+         name: wordpress
+         image: wordpress
+         links:
+           - "banco:mysql"
+         ports:
+           - "80:80" 
